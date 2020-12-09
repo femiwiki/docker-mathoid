@@ -1,20 +1,52 @@
 # Reference:
-#   https://github.com/wikimedia/parsoid/blob/v0.9.0/config.example.yaml
+#   https://github.com/wikimedia/mathoid/blob/8dcc67d3/config.dev.yaml (v0.7.5)
 
-worker_heartbeat_timeout: 300000
+num_workers: MATHOID_NUM_WORKERS
+worker_heap_limit_mb: 250
 logging:
-    level: info
+  level: warn
 services:
-  - module: lib/index.js
-    entrypoint: apiServiceWorker
+  - name: mathoid
+    module: ./app.js
     conf:
-        mwApis:
-        - uri: 'MEDIAWIKI_APIS_URI'
-          domain: 'MEDIAWIKI_APIS_DOMAIN'
-          prefix: 'MEDIAWIKI_APIS_PREFIX'
-        useSelser: true
-        serverInterface: '0.0.0.0'
-        port: 8000
-        linting: MEDIAWIKI_LINTING
-        linter:
-          sendAPI: MEDIAWIKI_LINTING
+      port: 10044
+      cors: '*'
+      svg: true
+      img: true
+      png: true
+      speech: true
+      texvcinfo: true
+      speech_on: true
+      speech_config:
+        semantics: true
+        domain: 'mathspeak'
+        style:  'default'
+        semantic: true
+        minSTree: false
+        speakText: true
+        enrich: true
+      mj_config:
+          extensions: "TeX/color,TeX/mediawiki-texvc,TeX/mhchem"
+          MathJax:
+            menuSettings:
+              semantics: true
+            SVG:
+              font: "TeX"
+            TeX:
+              noErrors:
+                disabled: true
+      no_check: false
+      dpi: 180
+      svgo: false
+      mwapi_req:
+        method: post
+        uri: https://{{domain}}/w/api.php
+        headers:
+          user-agent: '{{user-agent}}'
+        body: '{{ default(request.query, {}) }}'
+      restbase_req:
+        method: '{{request.method}}'
+        uri: https://{{domain}}/api/rest_v1/{+path}
+        query: '{{ default(request.query, {}) }}'
+        headers: '{{request.headers}}'
+        body: '{{request.body}}'

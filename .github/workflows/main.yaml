@@ -4,7 +4,7 @@ on:
       - master
 
 env:
-  IMAGE_NAME: parsoid
+  IMAGE_NAME: mathoid
 
 jobs:
   docker_image_job:
