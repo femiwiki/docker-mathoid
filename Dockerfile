@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:15-alpine
 
 # Environment variables used by Mathoid
 ENV APP_CONFIG_PATH=/srv/mathoid/config.yaml
