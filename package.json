@@ -1,7 +1,7 @@
 {
   "private": true,
   "dependencies": {
-    "mathoid": "0.7.5",
+    "mathoid": "0.7.6",
     "librsvg": "^0.7.0"
   }
 }
